@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Playlists from './Playlists';
 
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
@@ -25,8 +26,11 @@ class App extends Component {
             savedAlbums: {
                 name: 'Not Checked',
                 albumArt: ''
-            }
+            },
+            userPlaylists: []
         }
+
+        this.getUserPlaylists();
     }
 
     getHashParams() {
@@ -53,12 +57,22 @@ class App extends Component {
         })
     }
 
-    getTEST() {
-        spotifyApi.getUserPlaylists('envious1').then(function(data) {
-            console.log('User playlists', data);
-        }, function(err) {
-            console.error(err);
+    getUserPlaylists() {
+        spotifyApi.getUserPlaylists('envious1').then((response) => {
+            console.log('User playlists', response);
+            this.setState({userPlaylists: response});
         });
+    }
+
+    createPlaylistView = () => {
+        let li = []
+        console.log(this.state.userPlaylists);
+
+        // Outer loop to create parent
+        for (let i = 0; i < 3; i++) {
+            li.push(<li>{this.state.userPlaylists.items[1]}</li>)
+        }
+        return li
     }
 
     render() {
@@ -70,7 +84,10 @@ class App extends Component {
                 Now Playing: {this.state.nowPlaying.name}
             </div>
             <div>
-                Saved Albums:{this.state.savedAlbums.name}
+                Total User Playlists:
+            </div>
+            <div>
+                <Playlists/>
             </div>
             <div>
                 <img src={this.state.nowPlaying.albumArt} style={{
@@ -84,8 +101,8 @@ class App extends Component {
             }
 
             {
-                this.state.loggedIn && <button onClick={() => this.getTEST()}>
-                        Get Saved Albums
+                this.state.loggedIn && <button onClick={() => this.getUserPlaylists()}>
+                        Get User Playlists
                     </button>
             }
         </div>);
