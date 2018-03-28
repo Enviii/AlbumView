@@ -1,2 +1,4 @@
 auth-server/
 auth-server
+.DS_Store
+auth-server
