@@ -8,8 +8,8 @@ const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         const params = this.getHashParams();
         const token = params.access_token;
         if (token) {
@@ -31,6 +31,7 @@ class App extends Component {
         }
 
         this.getUserPlaylists();
+        this.getNowPlaying();
     }
 
     getHashParams() {
@@ -59,20 +60,8 @@ class App extends Component {
 
     getUserPlaylists() {
         spotifyApi.getUserPlaylists('envious1').then((response) => {
-            console.log('User playlists', response);
             this.setState({userPlaylists: response});
         });
-    }
-
-    createPlaylistView = () => {
-        let li = []
-        console.log(this.state.userPlaylists);
-
-        // Outer loop to create parent
-        for (let i = 0; i < 3; i++) {
-            li.push(<li>{this.state.userPlaylists.items[1]}</li>)
-        }
-        return li
     }
 
     render() {
@@ -87,14 +76,11 @@ class App extends Component {
                 Total User Playlists:
             </div>
             <div>
-                <Playlists/>
-            </div>
-            <div>
                 <img src={this.state.nowPlaying.albumArt} style={{
                         height: 150
                     }}/>
             </div>
-            {
+            {/* {
                 this.state.loggedIn && <button onClick={() => this.getNowPlaying()}>
                         Check Now Playing
                     </button>
@@ -104,7 +90,11 @@ class App extends Component {
                 this.state.loggedIn && <button onClick={() => this.getUserPlaylists()}>
                         Get User Playlists
                     </button>
+            } */
             }
+            <div>
+                <Playlists Playlists={this.state.userPlaylists} onload="onload"/>
+            </div>
         </div>);
     }
 }

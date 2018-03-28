@@ -8,36 +8,28 @@ const spotifyApi = new SpotifyWebApi();
 
 class Playlists extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            userPlaylists: []
-        }
-    }
-
-    getUserPlaylists() {
-        spotifyApi.getUserPlaylists('envious1').then((response) => {
-            console.log('User playlists22', response);
-            this.setState({userPlaylists: response});
-        });
-    }
-
     render() {
-        this.getUserPlaylists()
-        console.log(this.props);
-        if (!this.props.userPlaylists.length) 
+        console.log("yolo");
+        var arr = ['a', 'b', 'c', 'd'];
+        // console.log(this.props.Playlists, "whoop whoop");
+        // if (this.props.Playlists.items != undefined) {
+        //     console.log((this.props.Playlists.items));
+        //     console.log(this.props.Playlists.items.length);
+        //     console.log((this.props.Playlists.items).length);
+        //     console.log(this.props.Playlists, "toot toot");
+        // }
+        if (this.props.Playlists.items == undefined) 
             return <h1>No results</h1>
 
         return (<div>
             <ul>
                 {
-                    this.props.userPlaylists.map((item) => {
+                    this.props.Playlists.items.map((item) => {
                         return <a key={item.id} onClick={() => this.props.clicked(item.id)}>
                             <li key={item.id}>{item.name}</li>
                         </a>
                     })
-                }
-            </ul>
+                }</ul>
         </div>);
     }
 }
