@@ -22,15 +22,17 @@ class Playlists extends Component {
             return <h1>No results</h1>
 
         return (<div>
-            <ul>
-                {
-                    this.props.Playlists.items.map((item) => {
-                        return <a key={item.id} onClick={() => this.props.clicked(item.id)}>
-                            <li key={item.id}>{item.name}</li>
-                        </a>
-                    })
-                }</ul>
-        </div>);
+            {
+                this.props.Playlists.items.map((item) => {
+                    return <a key={item.id} onClick={() => this.props.clicked(item.id)}>
+                        <div key={item.id}>
+                            <img src={item.images[0].url} style={{
+                                    height: 150
+                                }}/> {item.name}
+                        </div>
+                    </a>
+                })
+            }</div>);
     }
 }
 

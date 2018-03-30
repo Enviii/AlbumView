@@ -6,6 +6,20 @@ import Playlists from './Playlists';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
+class LoginButton extends React.Component {
+    render() {
+        return (<a href='http://localhost:8888'>
+            Login to Spotify
+        </a>);
+    }
+}
+
+class LogoutButton extends React.Component {
+    render() {
+        return (<div>User: {this.props.LogoutButton.id}</div>);
+    }
+}
+
 class App extends Component {
 
     constructor(props) {
@@ -15,10 +29,11 @@ class App extends Component {
         if (token) {
             spotifyApi.setAccessToken(token);
         }
-        this.state = {
+        this.state = ({
             loggedIn: token
                 ? true
                 : false,
+            user: [],
             nowPlaying: {
                 name: 'Not Checked',
                 albumArt: ''
@@ -28,10 +43,13 @@ class App extends Component {
                 albumArt: ''
             },
             userPlaylists: []
-        }
+        });
 
-        this.getUserPlaylists();
+        console.log(token);
+        this.getMe();
         this.getNowPlaying();
+        this.getUserPlaylists();
+        //this.getUser();
     }
 
     getHashParams() {
@@ -47,6 +65,13 @@ class App extends Component {
         return hashParams;
     }
 
+    getMe() {
+        spotifyApi.getMe().then((response) => {
+            console.log(response);
+            this.setState({user: response});
+        });
+    }
+
     getNowPlaying() {
         spotifyApi.getMyCurrentPlaybackState().then((response) => {
             this.setState({
@@ -59,16 +84,33 @@ class App extends Component {
     }
 
     getUserPlaylists() {
+        console.log(this.state);
         spotifyApi.getUserPlaylists('envious1').then((response) => {
             this.setState({userPlaylists: response});
         });
     }
 
+    // const LogoutButton = () => {
+    //     return <div>
+    //         <h1>Hello World!</h1>
+    //         <p>This is my first React Component.</p>
+    //     </div>
+    // }
+
     render() {
+
+        var loginButton;
+        if (this.state.loggedIn) {
+            console.log("here222");
+            loginButton = <LogoutButton LogoutButton={this.state.user}/>;
+        } else {
+            console.log("here");
+            loginButton = <LoginButton/>;
+        }
+        console.log(this.state);
         return (<div className="App">
-            <a href='http://localhost:8888'>
-                Login to Spotify
-            </a>
+            {loginButton}
+
             <div>
                 Now Playing: {this.state.nowPlaying.name}
             </div>
