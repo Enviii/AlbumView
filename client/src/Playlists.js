@@ -21,14 +21,15 @@ class Playlists extends Component {
         if (this.props.Playlists.items == undefined) 
             return <h1>No results</h1>
 
-        return (<div>
+        return (<div id="playlist_view">
             {
                 this.props.Playlists.items.map((item) => {
-                    return <a key={item.id} onClick={() => this.props.clicked(item.id)}>
-                        <div key={item.id}>
-                            <img src={item.images[0].url} style={{
+                    return <a className="playlist_link" href={item.external_urls.spotify} target="_blank" key={item.id} onClick={() => console.log("clicked")}>
+                        <div className="playlist" key={item.id}>
+                            <img className="playlist_img" src={item.images[0].url} style={{
                                     height: 150
-                                }}/> {item.name}
+                                }}/>
+                            <span className="playlist_name">{item.name}</span>
                         </div>
                     </a>
                 })

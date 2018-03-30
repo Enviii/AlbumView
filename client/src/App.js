@@ -42,13 +42,15 @@ class App extends Component {
                 name: 'Not Checked',
                 albumArt: ''
             },
-            userPlaylists: []
+            userPlaylists: [],
+            albums: []
         });
 
-        console.log(token);
         this.getMe();
         this.getNowPlaying();
         this.getUserPlaylists();
+        this.getMySavedAlbums();
+        console.log(this.state);
         //this.getUser();
     }
 
@@ -67,7 +69,6 @@ class App extends Component {
 
     getMe() {
         spotifyApi.getMe().then((response) => {
-            console.log(response);
             this.setState({user: response});
         });
     }
@@ -84,9 +85,14 @@ class App extends Component {
     }
 
     getUserPlaylists() {
-        console.log(this.state);
         spotifyApi.getUserPlaylists('envious1').then((response) => {
             this.setState({userPlaylists: response});
+        });
+    }
+
+    getMySavedAlbums() {
+        spotifyApi.getMySavedAlbums().then((response) => {
+            this.setState({albums: response});
         });
     }
 
@@ -111,11 +117,8 @@ class App extends Component {
         return (<div className="App">
             {loginButton}
 
-            <div>
+            <div id="now_playing">
                 Now Playing: {this.state.nowPlaying.name}
-            </div>
-            <div>
-                Total User Playlists:
             </div>
             <div>
                 <img src={this.state.nowPlaying.albumArt} style={{
@@ -134,9 +137,8 @@ class App extends Component {
                     </button>
             } */
             }
-            <div>
-                <Playlists Playlists={this.state.userPlaylists} onload="onload"/>
-            </div>
+            <h3>User Playlists:</h3>
+            <Playlists Playlists={this.state.userPlaylists} onload="onload"/>
         </div>);
     }
 }
