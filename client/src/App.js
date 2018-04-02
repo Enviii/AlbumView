@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Playlists from './Playlists';
+import Albums from './Albums';
 
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
@@ -46,6 +47,8 @@ class App extends Component {
             albums: []
         });
 
+        console.log(token);
+
         this.getMe();
         this.getNowPlaying();
         this.getUserPlaylists();
@@ -85,13 +88,19 @@ class App extends Component {
     }
 
     getUserPlaylists() {
+        // {
+        //     limit: 5,
+        //     offset: 10
+        // }
         spotifyApi.getUserPlaylists('envious1').then((response) => {
             this.setState({userPlaylists: response});
         });
     }
 
     getMySavedAlbums() {
-        spotifyApi.getMySavedAlbums().then((response) => {
+        // {limit: 5, offset: 10}
+        spotifyApi.getMySavedAlbums({limit: 50, offset: 0}).then((response) => {
+            console.log(response);
             this.setState({albums: response});
         });
     }
@@ -139,6 +148,9 @@ class App extends Component {
             }
             <h3>User Playlists:</h3>
             <Playlists Playlists={this.state.userPlaylists} onload="onload"/>
+
+            <h3>User Albums:</h3>
+            <Albums Albums={this.state.albums} onload="onload"/>
         </div>);
     }
 }
