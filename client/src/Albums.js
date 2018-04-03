@@ -17,7 +17,9 @@ class Albums extends Component {
                 this.props.Albums.items.map((item) => {
                     return <a className="album_link" href={item.album.external_urls.spotify} target="_blank" key={item.id} onClick={() => console.log("clicked")}>
                         <div className="album" key={item.id}>
-                            <img className="album_img" src={item.album.images[0].url} style={{
+                            <img className="album_img" src={item.album.images.length > 0
+                                    ? item.album.images[0].url
+                                    : 'http://lorempixel.com/150/150/'} style={{
                                     height: 150
                                 }}/>
                             <span className="album_name">{item.album.name}</span>

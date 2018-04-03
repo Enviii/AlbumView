@@ -88,11 +88,10 @@ class App extends Component {
     }
 
     getUserPlaylists() {
-        // {
-        //     limit: 5,
-        //     offset: 10
-        // }
-        spotifyApi.getUserPlaylists('envious1').then((response) => {
+        spotifyApi.getUserPlaylists('envious1', {
+            limit: 50,
+            offset: 0
+        }).then((response) => {
             this.setState({userPlaylists: response});
         });
     }
@@ -104,13 +103,6 @@ class App extends Component {
             this.setState({albums: response});
         });
     }
-
-    // const LogoutButton = () => {
-    //     return <div>
-    //         <h1>Hello World!</h1>
-    //         <p>This is my first React Component.</p>
-    //     </div>
-    // }
 
     render() {
 
@@ -134,18 +126,7 @@ class App extends Component {
                         height: 150
                     }}/>
             </div>
-            {/* {
-                this.state.loggedIn && <button onClick={() => this.getNowPlaying()}>
-                        Check Now Playing
-                    </button>
-            }
 
-            {
-                this.state.loggedIn && <button onClick={() => this.getUserPlaylists()}>
-                        Get User Playlists
-                    </button>
-            } */
-            }
             <h3>User Playlists:</h3>
             <Playlists Playlists={this.state.userPlaylists} onload="onload"/>
 

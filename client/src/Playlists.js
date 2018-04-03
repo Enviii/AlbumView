@@ -26,7 +26,9 @@ class Playlists extends Component {
                 this.props.Playlists.items.map((item) => {
                     return <a className="playlist_link" href={item.external_urls.spotify} target="_blank" key={item.id} onClick={() => console.log("clicked")}>
                         <div className="playlist" key={item.id}>
-                            <img className="playlist_img" src={item.images[0].url} style={{
+                            <img className="playlist_img" src={item.images.length > 0
+                                    ? item.images[0].url
+                                    : 'http://lorempixel.com/150/150/'} style={{
                                     height: 150
                                 }}/>
                             <span className="playlist_name">{item.name}</span>
